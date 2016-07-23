@@ -8,6 +8,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <set>
 
 using namespace std;
 
@@ -137,6 +138,8 @@ void testList() {
 		intList.push_back(i);
 	}
 
+	cout << "begin testList.size()" << intList.size() << std::endl;
+
 	list<int>::iterator iter;
 
 	for (iter = intList.begin(); iter != intList.end(); iter++){
@@ -144,17 +147,29 @@ void testList() {
 		if (*iter == 3) {
 			//list使用iter++或者erase之后iter=返回值都是可以
 			//方法1
-			//intList.erase(iter++);
+			intList.erase(iter++);
 			//方法2
-			iter = intList.erase(iter);
+			//iter = intList.erase(iter);
+			//方法3
+			//intList.remove(*iter++);
 		}
 	}
+
+	//方法4。。
+	//intList.remove(3);
 	
-	for (iter = intList.begin(); iter != intList.end(); iter++){
+	cout << "after intMap.size()" << intList.size() << std::endl;
+	for (iter = intList.begin(); iter != intList.end(); iter++) {
 		cout << *iter << endl;
 	}
  
 	cout << "testList  end...." << std::endl;
+
+//参考 http://blog.csdn.net/ghosc/article/details/7008521
+//但是这个博客写的代码是有bug的 remove之后 后面的迭代器就挂了
+
+//疑问 remove只能根据值来删吗？ 
+
 }
 
 void testMap() {
@@ -164,15 +179,23 @@ void testMap() {
 	for (int i = 0; i < 30; i++) {
 		intMap.insert(make_pair(i, i));
 	}
+	cout << "begin intMap.size()" << intMap.size() << std::endl;
 
 	map<int, int>::iterator iter;
-	for (iter = intMap.begin(); iter !=  intMap.end(); iter++){
-		if (iter->second == 3){
-			//intMap.erase(iter++);  
-			iter = intMap.erase(iter);
+	//for (iter = intMap.begin(); iter !=  intMap.end(); iter++){
+	//	if (iter->second == 3){
+	//		//intMap.erase(iter++);  
+	//		iter = intMap.erase(iter);
+	//	}
+	//}
 
-		}
+	//方法2
+	iter = intMap.find(3);
+	if (iter != intMap.end()) {
+		intMap.erase(iter);
 	}
+
+
 
 	cout << "after intMap.size()"<< intMap.size() << std::endl;
 	//for (int i = 0; i < intMap.size(); i++) {
@@ -189,13 +212,42 @@ void testMap() {
 
 }
 
+//关于set http://www.cnblogs.com/BeyondAnyTime/archive/2012/08/13/2636375.html
+//这篇博文非常不错
+
+void testSet() {
+	cout << "testSet  end...." << std::endl;
+
+	set<int> s;
+	set<int>::iterator iter;
+	for (int i = 1; i <= 5; ++i){
+		s.insert(i);
+	}
+
+	for (iter = s.begin(); iter != s.end(); ++iter){
+		cout << *iter << " ";
+	}
+
+	cout << endl;
+	pair<set<int>::const_iterator, set<int>::const_iterator> pr;
+	pr = s.equal_range(3);
+	cout << "第一个大于等于 3 的数是 ：" << *pr.first << endl;
+	cout << "第一个大于 3的数是 ： " << *pr.second << endl;
+ 
+	cout << "testSet  end...." << std::endl;
+}
+
+
+ 
 int main()
 {
 	//testVector();
 
 	//testList();
-	
-	testMap();
+
+	//testMap();
+
+	testSet();
 
 	getchar();
 
