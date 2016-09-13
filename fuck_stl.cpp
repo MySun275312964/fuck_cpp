@@ -9,6 +9,7 @@
 #include <list>
 #include <map>
 #include <set>
+#include <windows.h>
 
 using namespace std;
 
@@ -237,17 +238,65 @@ void testSet() {
 	cout << "testSet  end...." << std::endl;
 }
 
+void testSizeOf()
+{
+	byte byA = 255;
+	int iA = 100;
+	float fA = 200.0f;
+	WORD wa = 50;
+	DWORD dwa = 100;
+	void* pkVoid = NULL;
+	std::vector<DWORD> kVector;
+	std::map<DWORD, DWORD> kMap;
 
- 
+	std::cout << "byte: "<<sizeof(byA) << endl;
+	std::cout << "int: " << sizeof(iA) << endl;
+	std::cout << "float: " << sizeof(fA) << endl;
+	std::cout << "WORD: " << sizeof(wa) << endl;
+	std::cout << "DWORD: " << sizeof(dwa) << endl;
+	std::cout << "pkVoid: " << sizeof(pkVoid) << endl;
+	std::cout << "kVector: " << sizeof(kVector) << endl;
+	std::cout << "kMap: " << sizeof(kMap) << endl;
+
+	kVector.resize(1000);
+	std::cout << "kVector1000: " << sizeof(kVector) << endl;
+}
+
+union 
+{
+	int iA;
+	char acB[3];
+}a;
+
+void testUnio()
+{
+	memset(&a, 0, sizeof(a));
+	a.acB[0] = 10;
+	a.acB[1] = 1;
+	a.acB[2] = 0;
+	printf("tesetiA %x \n", a.iA);
+	printf("tesetiB %x \n", a.acB); 
+}
+
+//printf("tesetiA %x \n", a.iA);	//266
+//printf("tesetiB %x \n", a.acB);	//D
+
 int main()
 {
+	vector<int> inttest;
+	int size = inttest.max_size();
+
+	//testUnio();
+
 	//testVector();
 
 	//testList();
 
 	//testMap();
 
-	testSet();
+	//testSet();
+
+	//testSizeOf();
 
 	getchar();
 
